@@ -47,7 +47,10 @@ int adyacentes(const string& lineal, const int& posicion){
 int completo(string lineal,int posicion){
     int ocupadas = k;
     for(int i = 0; i < n * m; i++){
-        if(lineal[i] == '#' || lineal[i] == '.' || lineal[i] == 'S') continue;
+        if(lineal[i] == '#' || 
+           lineal[i] == '.' || 
+           lineal[i] == 'S') 
+            continue;
 
         if(lineal[i] == 'T'){
             ocupadas++;
