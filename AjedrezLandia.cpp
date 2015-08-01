@@ -35,10 +35,9 @@ int adyacentes(const string& lineal, const int& posicion){
     int res = 0;
     for(int j = 0; j < 4; j++){
         int sig_pos = posicion + dir[j];
-
         if(posicion % m == 0 && dir[j] == -1) continue;
         if(posicion % m == m - 1 && dir[j] == 1) continue;
-
+        
         if(lineal[sig_pos] == 'T')
             res++;
     }
@@ -88,9 +87,8 @@ void busqueda(string lineal, int x){
     if(x >= n * m) return;
 
     int query = completo(lineal,x);
-
     if(query == -1) return;
-
+    
     if(query == 1){
         mayor = min(mayor, cuenta_torres(lineal));
         return;
