@@ -1,66 +1,49 @@
 #include <bits/stdc++.h>
-
 using namespace std;
 
+const int MAXN = 12;
+const int MAXP = 7;
+
 struct check{
-    int x;
-    int y;
+    int x, y;
+} puntos[MAXP];
+
+struct estado{
+    int x, y, ti;
+    
+    estado()
+        : x(0), y(0), ti(0) {}
+    estado(int sx, int sy, int sti)
+        : x(sx), y(sy), ti(sti) {}
 };
 
-struct visitando{
-    int x;
-    int y;
-    int ti;
-};
+int t[MAXP];
+queue<estado> cola;
+int matriz[MAXN][MAXN];
+int visitados[MAXN][MAXN];
+int dir[4][2] = { {1,0}, {-1,0}, {0,1}, {0,-1} };
 
-int matriz[10][10];
-int visitados[10][10];
-check puntos[5];
+
 int n,m;
-int t[5];
-int resultado = 0;
 int limit;
 int top = 0;
-visitando cola[70];
-
-void push(int x, int y, int tiempo){
-    cola[top].x = x;
-    cola[top].y = y;
-    cola[top].ti = tiempo;
-    top++;
-}
+int resultado = 0;
 
 int man( int x , int y , int a , int b){
     return abs(x - a) + abs(y - b);
 }
 
 void amplitud(int x, int y, int tiempo){
-    if(y - 1 >= 0){
-        if(matriz[x][y - 1] == 0 && visitados[x][y - 1] == -1){
-            visitados[x][y - 1] = tiempo + 1;
-            push(x , y - 1 , tiempo + 1);
-        }
-    }
-
-    if(y + 1 < m){
-        if(matriz[x][y + 1] == 0 && visitados[x][y + 1] == -1){
-            visitados[x][y + 1] = tiempo + 1;
-            push(x , y + 1 , tiempo + 1);
-        }
-    }
-
-    if(x - 1 >= 0){
-        if(matriz[x - 1][y] == 0 && visitados[x - 1][y] == -1){
-            visitados[x - 1][y] = tiempo + 1;
-            push(x - 1, y, tiempo + 1);
-        }
-    }
-
-    if(x + 1 < n){
-        if(matriz[x + 1][y] == 0 && visitados[x + 1][y] == -1){
-            visitados[x + 1][y] = tiempo + 1;
-            push(x + 1, y, tiempo + 1);
-        }
+    for(int i = 0; i < 4; i++){
+        int sig_x = x + dir[i][0];
+        int sig_y = y + dir[i][1];
+        if( sig_x >= 0 || sig_y >= 0 ){
+            if(matriz[sig_x][sig_y] == 0 && visitados[sig_x][sig_y] == -1){
+                estado query(sig_x, sig_y, tiempo + 1);
+                visitados[sig_x][sig_y] = tiempo + 1;
+                cola.push(query);
+            }
+        }    
     }
 }
 
@@ -71,8 +54,7 @@ void busqueda(int x, int y ,int tiempo , int checkpoint){
         resultado++;
         return;
     }
-
-
+    
     //VISITADO
     if(matriz[x][y] == 1) return;
 
@@ -85,32 +67,27 @@ void busqueda(int x, int y ,int tiempo , int checkpoint){
     }
 
     //CHECA SI ESTOY EN UN ESCONDITE QUE NO
-    for(int temp = checkpoint; temp < 4; temp++){
-        if(puntos[temp].x == x && puntos[temp].y == y){
+    for(int temp = checkpoint; temp < 4; temp++)
+        if(puntos[temp].x == x && puntos[temp].y == y)
             return;
-        }
-    }
 
     //QUICK MANHATAN
-    for(int i = checkpoint; i < 4; i++){
+    for(int i = checkpoint; i < 4; i++)
         if(tiempo < t[i] && man(x, y, puntos[i].x , puntos[i].y ) > (t[i] - tiempo) )
             return;
-    }
+    
 
     //RELLENAR
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < m; j++){
+    for(int i = 0; i < n; i++)
+        for(int j = 0; j < m; j++)
             visitados[i][j] = -1;
-        }
-    }
 
     //BUSQUEDA DE AMPLITUD
 
     push(x, y, tiempo);
     visitados[x][y] = tiempo;
-    for(int z = 0; z < top; z++){
+    for(int z = 0; z < top; z++)
         amplitud(cola[z].x,cola[z].y,cola[z].ti);
-    }
 
     top = 0;
 
@@ -150,6 +127,7 @@ void busqueda(int x, int y ,int tiempo , int checkpoint){
             cy = 0;
         }
     }
+    
     if(x + 1 < n && (x + 1 != 0 || y != 1) && matriz[x + 1][y] == 0){
 
 
@@ -172,6 +150,7 @@ void busqueda(int x, int y ,int tiempo , int checkpoint){
             cy = 0;
         }
     }
+    
     if(y - 1 >= 0 && (x != 0 || y - 1 != 1) && matriz[x][y - 1] == 0){
 
         int r  = x , c = y - 1;
@@ -214,6 +193,7 @@ void busqueda(int x, int y ,int tiempo , int checkpoint){
             cy = 1;
         }
     }
+    
     if(u > 1){
         matriz[x][y] = 0;
         return;
