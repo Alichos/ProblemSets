@@ -106,9 +106,13 @@ void busqueda(int x, int y ,int tiempo , int checkpoint){
     matriz[x][y] = 1;
 
     int u = 0, cx = 0, cy = 0;
-    if(x - 1 >= 0 && (x - 1 != 0 || y != 1) && matriz[x - 1][y] == 0){
+    for(int i = 0; i < 4; i++){
+        int sigx = x + dir[i][0];
+        int sigy = y + dir[i][0];
+        
+        if(sigy >= 0 && sigx >= 0 && (sigx != 0 || sigy != 1) && matriz[sigx][sigy] == 0){
 
-        int r  = x - 1 , c = y;
+        int r  = sigx , c = sigy;
         int vecinos = 0;
 
         if(r - 1 >= 0 && matriz[r - 1][c] == 0) ++vecinos;
@@ -116,15 +120,15 @@ void busqueda(int x, int y ,int tiempo , int checkpoint){
         if(c - 1 >= 0 && matriz[r][c - 1] == 0) ++vecinos;
         if(c + 1 < m && matriz[r][c + 1] == 0) ++vecinos;
 
-        if( vecinos == 0){
+        if(vecinos == 0){
             matriz[x][y] = 0;
             return;
         }
 
         if( vecinos == 1){
+            cx = dir[i][0];
+            cy = dir[i][1];
             u++;
-            cx = -1;
-            cy = 0;
         }
     }
     
@@ -203,18 +207,12 @@ void busqueda(int x, int y ,int tiempo , int checkpoint){
         matriz[x][y] = 0;
         return;
     }
-
-    if(y - 1 >= 0){
-        busqueda(x , y - 1 , tiempo + 1 , checkpoint);
-    }
-    if(y + 1 < m){
-        busqueda(x, y + 1 , tiempo + 1, checkpoint);
-    }
-    if(x - 1 >= 0){
-        busqueda(x - 1, y, tiempo + 1, checkpoint);
-    }
-    if(x + 1 < n){
-        busqueda(x + 1, y , tiempo + 1, checkpoint);
+    
+    for(int i = 0; i < 4; i++){
+        int sigx = x + dir[i][0];
+        int sigy = y + dir[i][1];
+        if(sigx >= 0 || sig_y >= 0)
+            busqueda(sigx, sigy, tiempo + 1, checkpoint);
     }
 
     matriz[x][y] = 0;
