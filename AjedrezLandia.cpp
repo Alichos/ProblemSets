@@ -46,14 +46,14 @@ int adyacentes(const string& lineal, const int& posicion){
 }
 
 int completo(string lineal){
-    string query = lineal;
-    for(int i = 0; i < n * m; i++) query[i] = 'N';
+    //string query = lineal;
+    //for(int i = 0; i < n * m; i++) query[i] = 'N';
 
     for(int i = 0; i < n * m; i++){
         if(lineal[i] == '#' || lineal[i] == '.' || lineal[i] == 'S') continue;
 
         if(lineal[i] == 'T'){
-            query[i] = 'S';
+            //query[i] = 'S';
             for(int j = 0; j < 4; j++){
                 int pos_actual = i + dir[j];
 
@@ -67,9 +67,9 @@ int completo(string lineal){
 
                     if(lineal[pos_actual] == '.' || lineal[pos_actual] == 'S'){
                         lineal[pos_actual] = 'S';
-                        query[pos_actual] = 'S';
+                      //  query[pos_actual] = 'S';
                     } else {
-                        query[pos_actual] = 'S';
+                      //  query[pos_actual] = 'S';
                         break;
                     }
 
@@ -89,19 +89,22 @@ int completo(string lineal){
     }
 
     for(int i = 0; i < n * m; i++)
-        if(lineal[i] == '.' || query[i] == 'N') return 0;
+        if(lineal[i] == '.' /* || query[i] == 'N' */) return 0;
     return 1;
 }
 
 void busqueda(string lineal, int x){
     if(x > n * m) return;
 
+    int encontradas = cuenta_torres(lineal);
+    if(encontradas >= mayor) return;
+
     int query = completo(lineal);
 
     if(query == -1) return;
 
     if(query == 1){
-        mayor = min(mayor, cuenta_torres(lineal));
+        mayor = min(mayor, encontradas);
         return;
     }
 
