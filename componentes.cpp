@@ -14,7 +14,7 @@ vector<int> aristas[MAXN];
 vector<int> aristas_invertidas[MAXN];
 int componentes[MAXN]; 
 
-pair< pair<int,int> ,int > querys[MAXN];
+pair< pair<int,int> ,int > querys[MAXQ];
 
 bool buscados[MAXN];
 string respuestas[MAXQ];
