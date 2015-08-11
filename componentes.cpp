@@ -2,7 +2,8 @@
 #define optimizar_io ios_base::sync_with_stdio(0);cin.tie(0);
 using namespace std;
 
-const int MAXN = 100002;
+const int MAXN = 20002;
+const int MAXQ = 100002;
 
 int n;
 
@@ -15,9 +16,8 @@ int componentes[MAXN];
 
 pair< pair<int,int> ,int > querys[MAXN];
 
-int cubeta[MAXN];
 bool buscados[MAXN];
-string respuestas[MAXN];
+string respuestas[MAXQ];
 
 void limpia_vis(){
 	fill(vis, vis + n + 1, false);
