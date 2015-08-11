@@ -1,4 +1,5 @@
 #include <bits/stdc++.h>
+#define optimizar_io ios_base::sync_with_stdio(0);cin.tie(0);
 using namespace std;
 
 const int MAXN = 20002;
@@ -10,10 +11,16 @@ stack<int> pila;
 vector<int> aristas[MAXN];
 
 vector<int> aristas_invertidas[MAXN];
-int componentes[MAXN];
+int componentes[MAXN]; 
+
+pair< pair<int,int> ,int > querys[MAXN];
+
+int cubeta[MAXN];
+bool buscados[MAXN];
+string respuestas[MAXN];
 
 void limpia_vis(){
-	fill(vis, vis + n, false);
+	fill(vis, vis + n + 1, false);
 }
 
 void DFS(int nodo){
@@ -31,30 +38,52 @@ void all_nodes(){
 }
 
 void busca_componentes(int nodo, int color){
-	for(int i = 0; i < aristas_invertidas[nodo].size(); i++){
-		if(vis[aristas_invertidas[nodo][i]] == false){ 
-			componentes[aristas_invertidas[nodo][i]] = color;
-			vis[aristas_invertidas[nodo][i]] = true;
-			DFS(aristas_invertidas[nodo][i]);
-		}
-	}
+	vis[nodo] = true;
+	componentes[nodo] = color;
+	for(int i = 0; i < aristas_invertidas[nodo].size(); i++)
+		if(vis[aristas_invertidas[nodo][i]] == false)
+			busca_componentes(aristas_invertidas[nodo][i], color);
 }
 
 void pinta(){
 	int color = 1;
 	while(!pila.empty()){
-		if(vis[pila.top()] == false){
-			vis[pila.top()] = true;
-			busca_componentes(pila.top(), color);
+		int nodo = pila.top();
+		pila.pop();
+
+		if(vis[nodo] == false){
+			vis[nodo] = true;
+			busca_componentes(nodo, color);
 			color++;
 		}
-		pila.pop();
+	}
+}
+
+void FuncionField(int nodo){
+	buscados[nodo] = true;
+	for(int i = 0; i < aristas[nodo].size(); i++){
+		if(buscados[aristas[nodo][i]] == false){
+			buscados[aristas[nodo][i]] = true;
+			FuncionField(aristas[nodo][i]);
+		}
+	}
+}
+
+void FlodField(int nodo){
+	vis[nodo] = true;
+	for(int i = 0; i < aristas[nodo].size(); i++){
+		if(componentes[nodo] == componentes[aristas[nodo][i]])
+			continue;
+		buscados[nodo] = true;
+		FuncionField(aristas[nodo][i]);
 	}
 }
 
 int main(){
-	int m,querys;
-	cin >> n >> m >> querys;
+	optimizar_io
+
+	int m,q;
+	cin >> n >> m >> q;
 	for(int i = 0; i < m; i++){
 		int x,y;
 		cin >> x >> y;
@@ -66,7 +95,30 @@ int main(){
 	limpia_vis();
 	pinta();
 
-	for(int i = 1; i <= n; i++)
-		cout << componentes[i] << " ";
+	for(int i = 0; i < q; i++){
+		cin >> querys[i].first.first >> querys[i].first.second;
+		querys[i].second = i;
+	}
+
+	sort(querys, querys + q);
+
+	limpia_vis();
+
+	for(int i = 0; i < q; i++){
+		if(vis[querys[i].first.first] == false){
+			FlodField(querys[i].first.first);
+			for(int j = i; j < q; j++){
+				if(querys[j].first.first != querys[i].first.first) break;
+				if(buscados[querys[j].first.second])
+					respuestas[querys[j].second] = "YES";
+				else
+					respuestas[querys[j].second] = "NO";
+			}
+			fill(buscados, buscados + n + 1, false);
+		} 
+	}
+
+	for(int i = 0; i < q; i++)
+		cout << respuestas[i] << "\n";	
 	return 0;
 }
