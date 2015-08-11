@@ -61,12 +61,9 @@ void pinta(){
 
 void FuncionField(int nodo){
 	buscados[nodo] = true;
-	for(int i = 0; i < aristas[nodo].size(); i++){
-		if(buscados[aristas[nodo][i]] == false){
-			buscados[aristas[nodo][i]] = true;
+	for(int i = 0; i < aristas[nodo].size(); i++)
+		if(buscados[aristas[nodo][i]] == false)
 			FuncionField(aristas[nodo][i]);
-		}
-	}
 }
 
 void FlodField(int nodo){
@@ -74,7 +71,6 @@ void FlodField(int nodo){
 	for(int i = 0; i < aristas[nodo].size(); i++){
 		if(componentes[nodo] == componentes[aristas[nodo][i]])
 			continue;
-		buscados[nodo] = true;
 		FuncionField(aristas[nodo][i]);
 	}
 }
