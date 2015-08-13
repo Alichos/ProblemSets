@@ -16,7 +16,8 @@ int componentes[MAXN];
 
 pair< pair<int,int> ,int > querys[MAXQ];
 
-bool buscados[MAXN];
+int buscados[MAXN];
+bool visitados[MAXN];
 string respuestas[MAXQ];
 
 void limpia_vis(){
@@ -59,19 +60,29 @@ void pinta(){
 	}
 }
 
-void FuncionField(int nodo){
-	buscados[nodo] = true;
-	for(int i = 0; i < aristas[nodo].size(); i++)
-		if(buscados[aristas[nodo][i]] == false)
-			FuncionField(aristas[nodo][i]);
+void FuncionField(int nodo, int color){
+	buscados[nodo] = color;
+	queue<int> cola;
+	cola.push(nodo);
+	while(!cola.empty()){
+		int query = cola.front();
+		cola.pop();
+
+		for(int i = 0; i < aristas[query].size(); i++){
+			if(buscados[aristas[query][i]] != color){
+				buscados[aristas[query][i]] = color;
+				cola.push(aristas[query][i]);
+			}
+		}
+	}
 }
 
-void FlodField(int nodo){
-	vis[nodo] = true;
+void FlodField(int nodo, int color){
+	visitados[nodo] = true;
 	for(int i = 0; i < aristas[nodo].size(); i++){
 		if(componentes[nodo] == componentes[aristas[nodo][i]])
 			continue;
-		FuncionField(aristas[nodo][i]);
+		FuncionField(aristas[nodo][i], color);
 	}
 }
 
@@ -98,19 +109,18 @@ int main(){
 
 	sort(querys, querys + q);
 
-	limpia_vis();
-
+	int color = 1;
 	for(int i = 0; i < q; i++){
-		if(vis[querys[i].first.first] == false){
-			FlodField(querys[i].first.first);
+		if(visitados[querys[i].first.first] == false){
+			FlodField(querys[i].first.first,color);
 			for(int j = i; j < q; j++){
 				if(querys[j].first.first != querys[i].first.first) break;
-				if(buscados[querys[j].first.second])
+				if(buscados[querys[j].first.second] == color)
 					respuestas[querys[j].second] = "YES";
 				else
 					respuestas[querys[j].second] = "NO";
 			}
-			fill(buscados, buscados + n + 1, false);
+			color++;
 		} 
 	}
 
