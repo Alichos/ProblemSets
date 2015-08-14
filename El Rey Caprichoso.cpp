@@ -4,8 +4,8 @@ using namespace std;
 const int MAXN = 130002;
 const int MAXC = 1000002;
 
-int cubeta[MAXC];
-int numeros[MAXN];
+long long int cubeta[MAXC];
+long long int numeros[MAXN];
 
 int main(){
 	int n;
@@ -17,7 +17,7 @@ int main(){
 		cubeta[numeros[i]]++;
 
 	for(long long int i = MAXC - 2; i >= 1; i--){
-		queue<int> cola;
+		queue<long long int> cola;
 		for(long long int j = i; j <= MAXC - 2; j += i){
 			if(cubeta[j] >= 2){
 				cola.push(j);
