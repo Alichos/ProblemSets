@@ -66,7 +66,6 @@ void busqueda(int i, int j, matrix mapa){
 		if(libre(i,j,k,mapa)){
 			mapa[i][j] = k;
 			busqueda(temp_i, temp_j, mapa);
-			mapa[i][j] = 0;
 		}
 	}
 }
