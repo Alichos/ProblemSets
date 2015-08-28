@@ -29,7 +29,7 @@ int main(){
     m = max(n,m);
     
     if(n <= 4)
-        cout << vis[make_pair(n,m) << "\n";
+        cout << vis[make_pair(n,m)] << "\n";
     
     int res = (n * 2) + (m * 2) - 4;
     n -= 4;
