@@ -28,15 +28,28 @@ int main(){
     n = min(n,m);
     m = max(n,m);
     
-    if(n <= 4)
+    if(n <= 4){
         cout << vis[make_pair(n,m)] << "\n";
+        return 0;
+    }
     
     int res = (n * 2) + (m * 2) - 4;
+    
     n -= 4;
     m -= 4;
     
-    res += vis[make_pair(n,m)];
+    if(n <= 4){
+        res += vis[make_pair(n,m)];
+        cout << res << "\n";
+        return 0;
+    } else {
+        res += (n * 2) + (m * 2) - 4;
+        n -= 4;
+        m -= 4;
+        res += vis[make_pair(n,m)];
+        
+        cout << res << "\n";
+    }
     
-    cout << res << "\n";
     return 0;
 }
