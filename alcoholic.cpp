@@ -1,17 +1,17 @@
 #include <bits/stdc++.h>
-#define lli long long;
+typedef long long lli;
 using namespace std;
+
+pair<lli,lli> simplifica(lli numerador, lli denominador){
+     long long MCD = __gcd(numerador,denominador);
+     return make_pair(numerador / MCD, denominador / MCD);
+}
 
 pair<lli, lli> suma_fraccion(lli x1, lli y1, lli x2, lli y2){
     long long denominador = y1 * y2;
     long long numerador = (y1 * x2) + (y2 * x1);
     pair<lli,lli> simp = simplifica(numerador,denominador);
     return simp;
-}
-
-pair<lli,lli> simplifica(lli numerador, lli denominador){
-     long long MCD = __gcd(numerador,denominador);
-     return make_pair(numerador / MCD, denominador / MCD);
 }
 
 int main(){
@@ -34,8 +34,8 @@ int main(){
         cout << "Avg. arrival time: ";
         
         pair<lli,lli> suma = suma_fraccion(d1,v1,d2,v2);
-        pair<lli,lli> fraccion_resultante = simplifica(suma_fraccion.first, 
-                                                        suma_fraccion.second * 2);
+        pair<lli,lli> fraccion_resultante = simplifica(suma.first, 
+                                                        suma.second * 2);
         
         if(fraccion_resultante.second == 1)
             cout << fraccion_resultante.first << "\n";
