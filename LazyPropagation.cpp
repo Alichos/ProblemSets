@@ -9,6 +9,11 @@ struct SegmentTree{
     int lazy[MAXN * 4];
     int tree[MAXN * 4];
     
+    void propaga(int nodo){
+        lazy[nodo * 2] = lazy[nodo];
+        lazy[(nodo * 2) + 1] = lazy[nodo];
+    }
+    
     void construye(int nodo, int izq, int der){
         if(izq > der)
             return;
@@ -26,10 +31,8 @@ struct SegmentTree{
     void update(int nodo, int izq, int der, int i, int j, int valor){
         if(lazy[nodo] > 0){
             tree[nodo] += lazy[nodo];
-            if(a != b){
-                lazy[nodo * 2] = lazy[nodo];
-                lazy[(nodo * 2) + 1] = lazy[nodo];
-            }
+            if(a != b)
+                propraga(nodo);
             lazy[nodo] = 0;
         }
         
@@ -38,10 +41,8 @@ struct SegmentTree{
         
         if(i <= izq && der <= j){
             tree[nodo] += valor;
-            if(a != b){
-                lazy[node * 2] = valor;
-                lazy[(node * 2) + 1] = valor;
-            }
+            if(a != b)
+                propaga(nodo);
             return;
         }
         
@@ -63,10 +64,8 @@ struct SegmentTree{
         
         if(lazy[nodo] != 0){
             tree[nodo] += lazy[nodo];
-            if(a != b){
-                lazy[nodo * 2] = lazy[nodo];
-                lazy[(nodo * 2) + 1] = lazy[nodo];
-            }
+            if(a != b)
+                propaga(nodo);
             lazy[nodo] = 0;
         }
         
