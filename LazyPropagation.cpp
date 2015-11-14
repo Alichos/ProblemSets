@@ -19,7 +19,7 @@ struct SegmentTree{
             return;
             
         if(izq == der){
-            tree[nodo] = INF;
+            tree[nodo] = INF; 
             return;
         }
         
