@@ -26,6 +26,8 @@ struct SegmentTree{
         int mitad = (izq + der) / 2;
         construye(nodo * 2, izq, mitad);
         construye((nodo * 2) + 1, mitad + 1, der);
+        return tree[nodo] = max(tree[nodo * 2],
+                                 tree[(nodo * 2) + 1]);
     }
     
     void update(int nodo, int izq, int der, int i, int j, int valor){
