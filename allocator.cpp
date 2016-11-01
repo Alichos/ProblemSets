@@ -21,6 +21,10 @@ struct SegmentTree{
 	SegmentTree(int n): 
 		tam(n - 1), raiz(0, n - 1) {}
 
+	int rango(Nodo *actual){
+		return actual->der - actual->izq + 1;
+	}
+
 	void buildTree_(int izquierda, int derecha, Nodo *actual){
 		if(izquierda == derecha) return;
 
@@ -34,10 +38,6 @@ struct SegmentTree{
 		int cardinalidad = actual->disponibles = (actual->der - actual->izq) + 1;
 		actual-> sufijo = cardinalidad;
 		actual-> prefijo = cardinalidad;
-	}
-
-	int rango(Nodo *actual){
-		return actual->der - actual->izq + 1;
 	}
 
 	void propagar(Nodo *actual){
@@ -77,6 +77,9 @@ struct SegmentTree{
 
 		if( actual->disponibles < memoriaAReservar) return INF;
 		if( actual->izq == actual->der) return actual->izq;
+
+		if(actual->hijo_izq->lazy != -1) propagar(actual->hijo_izq);
+		if(actual->hijo_der->lazy != -1) propagar(actual->hijo_der);
 
 		if(actual->hijo_izq->disponibles >= memoriaAReservar) 
 			return query_( memoriaAReservar, actual->hijo_izq);
