@@ -81,11 +81,11 @@ struct SegmentTree{
 		if(actual->hijo_izq->disponibles >= memoriaAReservar) 
 			return query_( memoriaAReservar, actual->hijo_izq);
 
-		if(actual->hijo_der->disponibles >= memoriaAReservar)
-			return query_( memoriaAReservar, actual->hijo_der);
-		
 		if(actual->hijo_izq->sufijo + actual->hijo_der->prefijo >= memoriaAReservar )
-			return (actual->hijo_izq->der - actual->hijo_izq->sufijo) + 1; 
+			return (actual->hijo_izq->der - actual->hijo_izq->sufijo) + 1;
+
+		if(actual->hijo_der->disponibles >= memoriaAReservar)
+			return query_( memoriaAReservar, actual->hijo_der); 
 	}
 
 	void buildTree(){
